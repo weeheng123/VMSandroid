@@ -1,5 +1,6 @@
 package com.example.vmsandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -70,12 +71,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Login> call, Response<Login> response) {
                             if (response.code() == 200){
-                                Login result = response.body();
-
-                                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-                                builder1.setTitle("Log in success");
-                                builder1.setMessage(result.getUsername());
-                                builder1.show();
+                                startActivity(new Intent(getApplicationContext(),Registration.class));
+//                                Login result = response.body();
+//
+//                                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+//                                builder1.setTitle("Log in success");
+//                                builder1.setMessage(result.getUsername());
+//                                builder1.show();
                             }
                  }
 
