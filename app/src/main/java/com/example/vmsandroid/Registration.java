@@ -200,7 +200,7 @@ public class Registration extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)  {
         if (resultCode == RESULT_OK ){
-            if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
                 //got image from gallery now crop it
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON) //enable image guidelines
