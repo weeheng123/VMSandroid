@@ -8,15 +8,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.SparseArray;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,11 +27,20 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.vision.Frame;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.text.TextBlock;
-import com.google.android.gms.vision.text.TextRecognizer;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -36,12 +48,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Registration extends Activity {
 
     EditText mResultEt;
+    TextView ic;
+    TextView address;
+    TextView name;
     ImageView mPreviewIv;
 
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 400;
     private static final int IMAGE_PICK_GALLERY_CODE = 1000;
     private static final int IMAGE_PICK_CAMERA_CODE = 1001;
+
+    int index = 0;
+    int indexofList = 0;
+    int positionofIC = 0 ;
+    boolean ICchecked = false;
 
     String cameraPermission[];
     String storagePermission[];
@@ -66,8 +86,10 @@ public class Registration extends Activity {
 
         retrofitInterface = retrofit.create(RetrofitInterface.class);
 
-        mResultEt = findViewById(R.id.resultEt);
         mPreviewIv = findViewById(R.id.imageIc);
+        ic = findViewById(R.id.visitorIC);
+        address = findViewById(R.id.visitorAddress);
+        name = findViewById(R.id.visitorName);
 
         //camera permission
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -90,23 +112,21 @@ public class Registration extends Activity {
                 dialog.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0){
+                        if (which == 0) {
                             //camera option clicked
-                            if (!checkCameraPermission()){
+                            if (!checkCameraPermission()) {
                                 //camera permission not allowed, request it
                                 requestCameraPermission();
-                            }
-                            else {
+                            } else {
                                 //permission allowed, take picture
                                 pickCamera();
                             }
                         }
-                        if (which == 1){
+                        if (which == 1) {
                             //gallery option clicked
-                            if(!checkStoragePermission()){
+                            if (!checkStoragePermission()) {
                                 requestStoragePermission();
-                            }
-                            else{
+                            } else {
                                 //permission allowed, select picture
                                 pickGallery();
                             }
@@ -121,7 +141,7 @@ public class Registration extends Activity {
 
     private void pickGallery() {
         //intent to pick image from gallery
-        Intent intent = new Intent (Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_PICK);
         //set intent type to image
         intent.setType("image/#");
         startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
@@ -134,7 +154,7 @@ public class Registration extends Activity {
         values.put(MediaStore.Images.Media.DESCRIPTION, "Image To Text");// description
         image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-        Intent cameraIntent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
         startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_CODE);
     }
@@ -166,30 +186,28 @@ public class Registration extends Activity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case CAMERA_REQUEST_CODE:
-                if(grantResults.length >0){
+                if (grantResults.length > 0) {
                     boolean cameraAccepted = grantResults[0] ==
                             PackageManager.PERMISSION_GRANTED;
                     boolean writeStorageAccepted = grantResults[0] ==
                             PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted && writeStorageAccepted){
+                    if (cameraAccepted && writeStorageAccepted) {
                         pickCamera();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(this, "permission denied", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
 
             case STORAGE_REQUEST_CODE:
-                if(grantResults.length >0){
+                if (grantResults.length > 0) {
                     boolean writeStorageAccepted = grantResults[0] ==
                             PackageManager.PERMISSION_GRANTED;
-                    if (writeStorageAccepted){
+                    if (writeStorageAccepted) {
                         pickCamera();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(this, "permission denied", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -198,9 +216,9 @@ public class Registration extends Activity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)  {
-        if (resultCode == RESULT_OK ){
-            if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
                 //got image from gallery now crop it
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON) //enable image guidelines
@@ -213,40 +231,102 @@ public class Registration extends Activity {
                         .start(this);
             }
         }
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri(); //get image Uri
                 //set image to image view
                 mPreviewIv.setImageURI(resultUri);
 
                 //get drawable bitmap for text recognition
-                BitmapDrawable bitmapDrawable = (BitmapDrawable)mPreviewIv.getDrawable();
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) mPreviewIv.getDrawable();
                 Bitmap bitmap = bitmapDrawable.getBitmap();
 
-                TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
+                FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap);
+                FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
 
-                if (!recognizer.isOperational()){
-                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-                    SparseArray<TextBlock> items = recognizer.detect(frame);
-                    StringBuilder sb = new StringBuilder();
-                    //get text from sb until there is no text
-                    for (int i = 0; i<items.size(); i++){
-                        TextBlock myItem = items.valueAt(i);
-                        sb.append(myItem.getValue());
-                        sb.append("\n");
+                detector.processImage(firebaseVisionImage).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+                    @Override
+                    public void onSuccess(FirebaseVisionText result) {
+                        displayTextFromImage(result);
+                        positionofIC = 0;
                     }
-                    //set text to edit text
-                    mResultEt.setText(sb.toString());
-                }
-            }
-            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
-                Exception error = result.getError();
-                Toast.makeText(this, ""+error, Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Registration.this, "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        Log.d("Error: ", e.getMessage());
+                    }
+                });
             }
         }
+    }
+
+    private void displayTextFromImage(FirebaseVisionText result) {
+//        List<FirebaseVisionText.TextBlock> blockList = firebaseVisionText.getTextBlocks();
+//        if (blockList.size() == 0){
+//            Toast.makeText(this, "No Text Found in image.", Toast.LENGTH_SHORT).show();
+//        }
+//        else{
+//            StringBuilder sb = new StringBuilder();
+//            for (FirebaseVisionText.TextBlock block: firebaseVisionText.getTextBlocks())
+//            {
+//                String text = block.getText();
+//                sb.append(text);
+//                sb.append("\n\n");
+//            }
+//            mResultEt.setText(sb.toString());
+//        }
+        List<FirebaseVisionText.TextBlock> blockList = result.getTextBlocks();
+        if (blockList.size() == 0){
+            Toast.makeText(this, "No Text Found in image.", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            StringBuilder sb = new StringBuilder();
+            StringBuilder sb3 = new StringBuilder();
+            for (FirebaseVisionText.TextBlock block: result.getTextBlocks()){
+                String results = block.getText();
+                sb3.append(results);
+                sb3.append("\n \n");
+                for (FirebaseVisionText.Line line : block.getLines()){
+                    String lineText = line.getText();
+                    for (FirebaseVisionText.Element element : line.getElements()) {
+                        String elementText = element.getText();
+                        if(elementText.contains("9")) {
+                            ICchecked = true;
+                            positionofIC = index;
+                            break;
+                        }
+                    }
+                }
+                index ++;
+            }
+        }
+        StringBuilder icDetails = new StringBuilder();
+        StringBuilder nameDetails = new StringBuilder();
+        StringBuilder addressDetails = new StringBuilder();
+        for (FirebaseVisionText.TextBlock block2: result.getTextBlocks()){
+            indexofList ++;
+            if (indexofList ==positionofIC + 1){
+                String details = block2.getText();
+                icDetails.append(details);
+                icDetails.append("\n \n");
+            }
+            if (indexofList ==positionofIC + 2){
+                String details = block2.getText();
+                nameDetails.append(details);
+                nameDetails.append("\n \n");
+            }
+            if (indexofList ==positionofIC + 3){
+                String details = block2.getText();
+                addressDetails.append(details);
+                addressDetails.append("\n \n");
+            }
+
+        }
+        ic.setText(icDetails);
+        name.setText(nameDetails);
+        address.setText(addressDetails);
     }
 }
