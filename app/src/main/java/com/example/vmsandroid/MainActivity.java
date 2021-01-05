@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://10.0.2.2:5000/";
+    private String BASE_URL = "https://aqueous-hollows-89178.herokuapp.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +71,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Login> call, Response<Login> response) {
                             if (response.code() == 200){
-                                startActivity(new Intent(getApplicationContext(),Registration.class));
-//                                Login result = response.body();
-//
-//                                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-//                                builder1.setTitle("Log in success");
-//                                builder1.setMessage(result.getUsername());
-//                                builder1.show();
+                                startActivity(new Intent(getApplicationContext(),MainMenu.class));
+                                Login result = response.body();
                             }
                  }
 
