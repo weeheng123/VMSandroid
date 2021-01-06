@@ -18,15 +18,15 @@
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />
-        <activity android:name="com.example.vmsandroid.MainMenu">
+        <activity android:name="com.example.vmsandroid.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity android:name="com.example.vmsandroid.MainMenu">-->
-<!--        </activity>-->
+        <activity android:name="com.example.vmsandroid.MainMenu">
+        </activity>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/ScannerTheme"/> <!-- optional (needed if default theme has no action bar) -->
     </application>
