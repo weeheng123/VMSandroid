@@ -48,6 +48,7 @@ public class IncidentFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getActivity().setTitle("Incident");
         super.onCreate(savedInstanceState);
         getActivity().setTitle("Incident Report");
         if (getArguments() != null) {

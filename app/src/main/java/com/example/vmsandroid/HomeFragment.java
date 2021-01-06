@@ -1,5 +1,8 @@
 package com.example.vmsandroid;
 
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +28,13 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     public HomeFragment() {
+
+
+
+//        Resources res = getResources();
+//        String[] announcements = res.getStringArray(R.array.announcement);
+
+
         // Required empty public constructor
     }
 
@@ -48,6 +58,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getActivity().setTitle("Announcement");
         super.onCreate(savedInstanceState);
         getActivity().setTitle("Announcement");
         if (getArguments() != null) {

@@ -48,6 +48,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getActivity().setTitle("Profile");
         super.onCreate(savedInstanceState);
         getActivity().setTitle("Profile");
 
