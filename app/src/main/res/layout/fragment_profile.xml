@@ -27,9 +27,9 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/button5"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="570dp"
+        android:layout_marginBottom="10dp"
         android:text="Edit Profile"
         android:textColor="@color/black" />
 
@@ -37,9 +37,9 @@
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button4"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/black"
         android:text="Logout"
         android:textColor="@color/white" />
