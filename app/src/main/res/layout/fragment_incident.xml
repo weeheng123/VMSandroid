@@ -63,7 +63,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingLeft="10dp">
+                        android:padding="10dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="10dp"
-                            android:text="Visitor IC:"
+                            android:text=" Address:"
                             android:textColor="@color/black"
                             android:textSize="20dp" />
                         <!-- The image taken will be displayed here -->
@@ -101,7 +101,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="10dp"
-                            android:text="Visitor Address:"
+                            android:text="Remarks:"
                             android:textColor="@color/black"
                             android:textSize="20dp" />
                         <!-- The image taken will be displayed here -->
