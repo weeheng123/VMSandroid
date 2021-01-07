@@ -1,5 +1,6 @@
 package com.example.vmsandroid;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -74,12 +75,14 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(new Intent(getApplicationContext(),MainMenu.class));
                                 Login result = response.body();
                             }
+                            if (response.code() ==404){
+                                Toast.makeText(MainActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                            }
                  }
 
                     @Override
                     public void onFailure(Call<Login> call, Throwable t) {
-                        Toast.makeText( MainActivity.this, t.getMessage(),
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

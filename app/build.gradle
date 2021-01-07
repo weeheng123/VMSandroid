@@ -42,5 +42,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'com.google.firebase:firebase-ml-vision:24.1.0'
+
+    //QR CODE Generator
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
+    implementation 'com.google.zxing:core:3.3.2'
 }
 apply plugin: 'com.google.gms.google-services'
