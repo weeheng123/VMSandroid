@@ -19,7 +19,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,6 +33,7 @@
                 app:cardUseCompatPadding="true"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp"
+                android:layout_marginTop="6dp"
                 android:layout_gravity="center">
 
                 <LinearLayout
@@ -41,17 +42,45 @@
                     android:orientation="vertical"
                     android:padding="10dp">
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Image Uploaded"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Image Uploaded"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:layout_centerVertical="true"
+                            />
+
+                        <Button
+                            android:id="@+id/uploadIc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="0dp"
+                            android:backgroundTint="@color/black"
+                            android:text="Upload IC"
+                            android:textColor="@color/white" />
+                    </RelativeLayout>
+
+
                     <!-- The image taken will be displayed here -->
-                    <ImageView
-                        android:id="@+id/imageIc"
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/imageIc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"/>
+                    </LinearLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
@@ -113,14 +142,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <Button
-                        android:id="@+id/uploadIc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Upload IC"
-                        android:layout_gravity="center"
-                        android:backgroundTint="@color/black"
-                        android:textColor="@color/white"/>
 
                     <Button
                         android:id="@+id/generateQR"
@@ -134,7 +155,7 @@
                     <ImageView
                         android:id="@+id/qrImage"
                         android:layout_width="match_parent"
-                        android:layout_height="267dp"
+                        android:layout_height="wrap_content"
                         android:src="@drawable/common_google_signin_btn_icon_dark_normal_background" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
