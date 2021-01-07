@@ -80,6 +80,8 @@
                         android:maxHeight="250dp"
                         android:id="@+id/visitorName"
                         android:textColor="@color/black"
+                        android:backgroundTint="#D3D3D3"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -93,6 +95,7 @@
                         android:maxHeight="250dp"
                         android:id="@+id/visitorIC"
                         android:textColor="@color/black"
+                        android:backgroundTint="#D3D3D3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -106,6 +109,7 @@
                         android:maxHeight="250dp"
                         android:id="@+id/visitorAddress"
                         android:textColor="@color/black"
+                        android:backgroundTint="#D3D3D3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
