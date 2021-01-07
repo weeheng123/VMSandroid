@@ -36,11 +36,19 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.google.zxing.WriterException;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.HashMap;
 import java.util.List;
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -49,10 +57,11 @@ import static android.app.Activity.RESULT_OK;
 public class RegistrationFragment extends Fragment {
 
     EditText mResultEt;
-    TextView ic;
-    TextView address;
-    TextView name;
+    EditText ic;
+    EditText address;
+    EditText name;
     ImageView mPreviewIv;
+    ImageView qrImage;
 
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 400;
@@ -71,9 +80,14 @@ public class RegistrationFragment extends Fragment {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://10.0.2.2:5000/";
+    private String BASE_URL = "https://aqueous-hollows-89178.herokuapp.com/";
+    private String QRText = "";
+    private String oriname = "";
+    private String oriic = "";
+    private String oriaddress = "";
 
     Button uploadic;
+    Button generateQR;
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -97,11 +111,31 @@ public class RegistrationFragment extends Fragment {
         ic = v.findViewById(R.id.visitorIC);
         address = v.findViewById(R.id.visitorAddress);
         name = v.findViewById(R.id.visitorName);
+        generateQR = v.findViewById(R.id.generateQR);
+        qrImage = v.findViewById(R.id.qrImage);
+        qrImage.setImageResource(android.R.color.transparent);
 
         //camera permission
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         //storage permission
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        generateQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPreviewIv.getDrawable() == null) {
+                    Toast.makeText(getActivity(), "Image needs to be uploaded", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String data = QRText;
+                    QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, 1000);
+                    Bitmap qrBits = qrgEncoder.getBitmap();
+                    qrImage.setImageBitmap(qrBits);
+
+                    createQRentry();
+                }
+            }
+        });
 
         Button button = (Button) v.findViewById(R.id.uploadIc);
         button.setOnClickListener(new View.OnClickListener() {
@@ -334,8 +368,44 @@ public class RegistrationFragment extends Fragment {
             }
 
         }
+
+        oriic = icDetails + "";
+        oriname = nameDetails + "";
+        oriaddress = addressDetails + "";
         ic.setText(icDetails);
         name.setText(nameDetails);
         address.setText(addressDetails);
+        QRText = ic.getText().toString() + ";" + name.getText().toString() + ";" + address.getText().toString();
+    }
+
+    private void createQRentry(){
+        HashMap<String, String> detailstore = new HashMap<>();
+
+        detailstore.put("oriname", oriname);
+        detailstore.put("oriic", oriic);
+        detailstore.put("oriaddress", oriaddress);
+        detailstore.put("name", name.getText().toString());
+        detailstore.put("ic", ic.getText().toString());
+        detailstore.put("address", address.getText().toString());
+
+
+        Call<qrentry> call = retrofitInterface.qrdetailEntry(detailstore);
+
+        call.enqueue(new Callback<qrentry>() {
+            @Override
+            public void onResponse(Call<qrentry> call, Response<qrentry> response) {
+                    if(!response.isSuccessful()){
+                        Toast.makeText(getActivity(), "Unsuccesful Creation", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "Please share your QR Code to the visitor", Toast.LENGTH_SHORT).show();
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<qrentry> call, Throwable t) {
+                Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
