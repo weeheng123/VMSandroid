@@ -1,13 +1,21 @@
 package com.example.vmsandroid;
-import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Login {
 
-    private String username;
-    private String password;
+    @SerializedName("user")
+    @Expose
+    private List<User> user = null;
 
-    public String getUsername() {
-        return username;
+    public List<User> getUser() {
+        return user;
     }
+
+    public void setUser(List<User> user) {
+        this.user = user;
+    }
+
 }
