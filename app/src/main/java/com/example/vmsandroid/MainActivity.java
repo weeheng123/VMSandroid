@@ -3,6 +3,7 @@ package com.example.vmsandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,8 +11,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashMap;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,9 +41,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        HttpLoggingInterceptor loggingInterceptor =  new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
 
         retrofitInterface = retrofit.create(RetrofitInterface.class);
@@ -72,8 +91,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Login> call, Response<Login> response) {
                             if (response.code() == 200){
-                                startActivity(new Intent(getApplicationContext(),MainMenu.class));
-                                Login result = response.body();
+//                                startActivity(new Intent(getApplicationContext(),MainMenu.class));
+
+//                                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+//                                builder1.setTitle(loginresult.getRole());
+//                                builder1.setMessage(loginresult.getUsername());
+//                                builder1.show();
+                                Toast.makeText(MainActivity.this, "role"+ response.body().getUser(), Toast.LENGTH_SHORT).show();
                             }
                             if (response.code() ==404){
                                 Toast.makeText(MainActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
@@ -82,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Login> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "error" + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

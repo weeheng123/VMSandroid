@@ -46,5 +46,8 @@ dependencies {
     //QR CODE Generator
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
     implementation 'com.google.zxing:core:3.3.2'
+
+    //OKhttp logging interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 }
 apply plugin: 'com.google.gms.google-services'
