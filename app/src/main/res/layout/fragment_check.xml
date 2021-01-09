@@ -74,7 +74,7 @@
                     android:textSize="20sp" />
                 <!-- The image taken will be displayed here -->
                 <TextView
-                    android:id="@+id/visitorName"
+                    android:id="@+id/qrvisitorName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxHeight="250dp"
@@ -88,7 +88,7 @@
                     android:textSize="20sp" />
                 <!-- The image taken will be displayed here -->
                 <TextView
-                    android:id="@+id/visitorIC"
+                    android:id="@+id/qrvisitorIC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxHeight="250dp"
@@ -102,7 +102,7 @@
                     android:textSize="20sp" />
                 <!-- The image taken will be displayed here -->
                 <TextView
-                    android:id="@+id/visitorAddress"
+                    android:id="@+id/qrvisitorAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxHeight="250dp"

@@ -1,5 +1,6 @@
 package com.example.vmsandroid;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -84,10 +85,12 @@ public class MainActivity extends AppCompatActivity {
                             if (response.code() == 200){
                                 if ((response.body().getUser().get(0).getRole()).contains("Guard"))
                                 {
+                                    builder.setOnDismissListener(DialogInterface::dismiss);
                                     startActivity(new Intent(getApplicationContext(),MainMenu_guard.class));
                                 }
                                 else
                                 {
+                                    builder.setOnDismissListener(DialogInterface::dismiss);
                                     startActivity(new Intent(getApplicationContext(),MainMenu.class));
                                 }
 
