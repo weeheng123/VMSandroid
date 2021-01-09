@@ -11,10 +11,12 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 
+import java.util.StringTokenizer;
+
 public class qrscanner extends AppCompatActivity {
     CodeScanner codeScanner;
     CodeScannerView scanView;
-    TextView resultData;
+    TextView resultData, ictextview, nametextview, addresstextview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -23,6 +25,10 @@ public class qrscanner extends AppCompatActivity {
 
         scanView = findViewById(R.id.scannerView);
         resultData = findViewById(R.id.resultview);
+
+        ictextview = findViewById(R.id.qrvisitorIC);
+        nametextview = findViewById(R.id.qrvisitorName);
+        addresstextview = findViewById(R.id.qrvisitorAddress);
 
         codeScanner = new CodeScanner(this, scanView);
 
@@ -33,10 +39,35 @@ public class qrscanner extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        resultData.setText(result.getText());
+                        StringTokenizer tokens = new StringTokenizer(result.getText(), ";");
+                        String qric = tokens.nextToken();
+                        String qrname = tokens.nextToken();
+                        String qraddress = tokens.nextToken();
+                        String[] qrdetails = new String[];
+                        qrdetails[1] = qric;
+                        qrdetails[2] = qrname;
+                        qrdetails[3] = qraddress;
+
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArray("QRdetails", qrdetails);
+
+                        CheckFragment fragobj = new CheckFragment();
+                        fragobj.setArguments(bundle);
+
+                        resultData.setText("IC:" + qric + "Name:" + qrname + "Address:" + qraddress);
+
+
                     }
                 });
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        codeScanner.startPreview();
+    }
 }
+
+
