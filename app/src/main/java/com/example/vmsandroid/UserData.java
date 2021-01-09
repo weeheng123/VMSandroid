@@ -3,7 +3,7 @@ package com.example.vmsandroid;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class UserData {
 
     @SerializedName("role")
     @Expose
