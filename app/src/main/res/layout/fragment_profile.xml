@@ -39,14 +39,14 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button5"
+        android:layout_above="@+id/logout"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:text="Edit Profile"
         android:textColor="@color/black" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

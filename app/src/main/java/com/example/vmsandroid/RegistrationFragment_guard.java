@@ -15,9 +15,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -98,7 +100,18 @@ public class RegistrationFragment_guard extends Fragment {
                              Bundle savedInstanceState) {
         getActivity().setTitle("Registration");
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_registration, container, false);
+        View v =  inflater.inflate(R.layout.fragment_registration_guard, container, false);
+
+        CardView backToCheck = (CardView) v.findViewById(R.id.backToCheck);
+        backToCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container, new CheckFragment());
+                fragmentTransaction.commit();
+            }
+        });
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

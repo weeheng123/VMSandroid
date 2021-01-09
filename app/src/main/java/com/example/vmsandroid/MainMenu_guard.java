@@ -6,6 +6,8 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -37,7 +39,7 @@ public class MainMenu_guard extends AppCompatActivity {
                             break;
 
                         case R.id.incident:
-                            fragment=new IncidentFragment();
+                            fragment=new Incident_GuardFragment();
                             break;
 
                         case R.id.registration:
@@ -54,4 +56,5 @@ public class MainMenu_guard extends AppCompatActivity {
                     return true;
                 }
             };
+
 }
