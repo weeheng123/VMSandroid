@@ -10,6 +10,17 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +28,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+    private Retrofit retrofit;
+    private RetrofitInterface retrofitInterface;
+    private String BASE_URL = "https://aqueous-hollows-89178.herokuapp.com/";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,6 +80,48 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        HttpLoggingInterceptor loggingInterceptor =  new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+
+        Call<announcementList> call = retrofitInterface.getAnn();
+
+        call.enqueue(new Callback<announcementList>() {
+            @Override
+            public void onResponse(Call<announcementList> call, Response<announcementList> response) {
+                if (response.code() == 200){
+//                                startActivity(new Intent(getApplicationContext(),MainMenu.class));
+
+
+//                                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+//                                builder1.setTitle(loginresult.getRole());
+//                                builder1.setMessage(loginresult.getUsername());
+//                                builder1.show();
+                    Toast.makeText(getActivity(), "Title:"+ response.body().getAnnouncement().get(0).getTitle(), Toast.LENGTH_SHORT).show();
+                }
+                if (response.code() ==404){
+                    Toast.makeText(getActivity(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<announcementList> call, Throwable t) {
+
+            }
+        });
+
     }
 
     @Override

@@ -4,17 +4,17 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Login {
+public class UserList {
 
     @SerializedName("user")
     @Expose
-    private List<User> user = null;
+    private List<UserData> user = null;
 
-    public List<User> getUser() {
+    public List<UserData> getUser() {
         return user;
     }
 
-    public void setUser(List<User> user) {
+    public void setUser(List<UserData> user) {
         this.user = user;
     }
 
