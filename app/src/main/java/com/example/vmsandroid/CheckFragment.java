@@ -31,9 +31,19 @@ public class CheckFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_check, container, false);
 
-        // Get data from activity
-        String[] qrdetails = getArguments().getStringArray("QRDetails");
+        qrIC = v.findViewById(R.id.qrvisitorIC);
+        qrName = v.findViewById(R.id.qrvisitorName);
+        qrAddress = v.findViewById(R.id.qrvisitorAddress);
 
+
+        // Get data from activity
+        String[] qrdetails = new String[0];
+        if (getArguments() != null) {
+            qrdetails = getArguments().getStringArray("QRDetails");
+            qrIC.setText(qrdetails[0]);
+            qrName.setText(qrdetails[1]);
+            qrAddress.setText(qrdetails[2]);
+        }
 
         Button registeruser = (Button) v.findViewById(R.id.registeruser);
         registeruser.setOnClickListener(new View.OnClickListener() {

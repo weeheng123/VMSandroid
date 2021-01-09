@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
@@ -43,19 +44,16 @@ public class qrscanner extends AppCompatActivity {
                         String qric = tokens.nextToken();
                         String qrname = tokens.nextToken();
                         String qraddress = tokens.nextToken();
-                        String[] qrdetails = new String[];
-                        qrdetails[1] = qric;
-                        qrdetails[2] = qrname;
-                        qrdetails[3] = qraddress;
+                        String[] qrdetails = new String[3];
+                        qrdetails[0] = qric;
+                        qrdetails[1] = qrname;
+                        qrdetails[2] = qraddress;
 
                         Bundle bundle = new Bundle();
                         bundle.putStringArray("QRdetails", qrdetails);
 
                         CheckFragment fragobj = new CheckFragment();
                         fragobj.setArguments(bundle);
-
-                        resultData.setText("IC:" + qric + "Name:" + qrname + "Address:" + qraddress);
-
 
                     }
                 });
