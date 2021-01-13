@@ -1,11 +1,13 @@
 package com.example.vmsandroid;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -81,7 +83,17 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<UserList> call, Response<UserList> response) {
                             if (response.code() == 200){
-                                startActivity(new Intent(getApplicationContext(),MainMenu.class));
+                                if ((response.body().getUser().get(0).getRole()).contains("Guard"))
+                                {
+                                    builder.setOnDismissListener(DialogInterface::dismiss);
+                                    startActivity(new Intent(getApplicationContext(),MainMenu_guard.class));
+                                }
+                                else
+                                {
+                                    builder.setOnDismissListener(DialogInterface::dismiss);
+                                    startActivity(new Intent(getApplicationContext(),MainMenu.class));
+                                }
+
 
 
 //                                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
