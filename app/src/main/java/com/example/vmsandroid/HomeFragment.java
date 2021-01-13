@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment {
 //                                builder1.setMessage(loginresult.getUsername());
 //                                builder1.show();
 
-                    Toast.makeText(getActivity(), "Title:"+ response.body().getAnnouncement().get(0).getTitle(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "Title:"+ response.body().getAnnouncement().get(0).getTitle(), Toast.LENGTH_SHORT).show();
                 }
                 if (response.code() ==404){
                     Toast.makeText(getActivity(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();

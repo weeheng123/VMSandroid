@@ -23,7 +23,39 @@ public class MainMenu_guard extends AppCompatActivity {
         bottomNavigationView=findViewById(R.id.BottomNav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
+        String intentFragment;
+        if (savedInstanceState == null){
+            Bundle extras = getIntent().getExtras();
+            if (extras == null){
+                intentFragment = "Home";
+            }
+            else
+            {
+                intentFragment = extras.getString("toFrag");
+            }
+        }
+        else
+        {
+            intentFragment = (String) savedInstanceState.getSerializable(("toFrag"));
+        }
+
+        switch (intentFragment){
+            case "Home":
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
+                break;
+            case "CheckFragment":
+                bottomNavigationView.setSelectedItemId(R.id.registration);
+                Bundle userBundle = getIntent().getExtras();
+                String[] userData = userBundle.getStringArray("qrdetails");
+                Bundle fragUserData = new Bundle();
+                fragUserData.putStringArray("QRDetails", userData);
+                Fragment CheckFragment = new CheckFragment();
+                CheckFragment.setArguments(fragUserData);
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,CheckFragment).commit();
+
+                break;
+        }
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod=new

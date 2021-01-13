@@ -16,12 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CheckFragment extends Fragment {
 
     private static final int CAMERA_REQUEST_CODE = 200;
 
     TextView qrIC,qrName,qrAddress;
+    String[] qrdata;
 
     String cameraPermission[];
 
@@ -37,13 +39,18 @@ public class CheckFragment extends Fragment {
 
 
         // Get data from activity
-        String[] qrdetails = new String[0];
-        if (getArguments() != null) {
-            qrdetails = getArguments().getStringArray("QRDetails");
-            qrIC.setText(qrdetails[0]);
-            qrName.setText(qrdetails[1]);
-            qrAddress.setText(qrdetails[2]);
+        Bundle QRdata = getArguments();
+        if (QRdata != null){
+            qrdata = QRdata.getStringArray("QRDetails");
+
         }
+
+        if (qrdata != null){
+            qrIC.setText(qrdata[0]);
+            qrName.setText(qrdata[1]);
+            qrAddress.setText(qrdata[2]);
+        }
+
 
         Button registeruser = (Button) v.findViewById(R.id.registeruser);
         registeruser.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +76,7 @@ public class CheckFragment extends Fragment {
 
             }
         });
-        return v;
+         return v;
     }
 
     private void requestCameraPermission() {
