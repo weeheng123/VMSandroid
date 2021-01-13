@@ -6,12 +6,18 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Console;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -28,6 +34,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
@@ -75,7 +85,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         getActivity().setTitle("Announcement");
         super.onCreate(savedInstanceState);
-        getActivity().setTitle("Announcement");
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -102,6 +112,25 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<announcementList> call, Response<announcementList> response) {
                 if (response.code() == 200){
+
+                    ArrayList<IterateAnnouncement> Announcement = new ArrayList<>();
+
+                    for (int i = 0; i < response.body().getAnnouncement().size(); i++){
+                        Announcement.add(new IterateAnnouncement(response.body().getAnnouncement().get(i).getTitle(), response.body().getAnnouncement().get(i).getCreatedAt(), response.body().getAnnouncement().get(i).getDescription()));
+
+                    }
+                    //Announcement.add(new IterateAnnouncement(response.body().getAnnouncement().get(0).getTitle(), response.body().getAnnouncement().get(0).getCreatedAt(), response.body().getAnnouncement().get(0).getDescription()));
+                    //Announcement.add(new IterateAnnouncement(response.body().getAnnouncement().get(1).getTitle(), response.body().getAnnouncement().get(1).getCreatedAt(), response.body().getAnnouncement().get(1).getDescription()));
+
+                    mRecyclerView = getActivity().findViewById(R.id.RecyclerView);
+                    mRecyclerView.setHasFixedSize(true);
+                    mLayoutManager = new LinearLayoutManager(getActivity());
+                    mAdapter = new Adapter(Announcement);
+
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    mRecyclerView.setAdapter(mAdapter);
+
+
 //                                startActivity(new Intent(getApplicationContext(),MainMenu.class));
 
 
@@ -109,7 +138,7 @@ public class HomeFragment extends Fragment {
 //                                builder1.setTitle(loginresult.getRole());
 //                                builder1.setMessage(loginresult.getUsername());
 //                                builder1.show();
-                    Toast.makeText(getActivity(), "Title:"+ response.body().getAnnouncement().get(0).getTitle(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Title:"+ response.body().getAnnouncement().get(1).getTitle(), Toast.LENGTH_SHORT).show();
                 }
                 if (response.code() ==404){
                     Toast.makeText(getActivity(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
@@ -130,4 +159,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
+
+
 }
