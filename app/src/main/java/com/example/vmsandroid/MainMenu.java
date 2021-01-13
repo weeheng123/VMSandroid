@@ -21,7 +21,7 @@ public class MainMenu extends AppCompatActivity {
         bottomNavigationView=findViewById(R.id.BottomNav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod=new
