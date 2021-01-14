@@ -404,10 +404,14 @@ public class RegistrationFragment_guard extends Fragment {
         call.enqueue(new Callback<qrentry>() {
             @Override
             public void onResponse(Call<qrentry> call, Response<qrentry> response) {
-                if(!response.isSuccessful()){
-                    Toast.makeText(getActivity(), "Unsuccesful Creation", Toast.LENGTH_SHORT).show();
+                if(response.code() == 400){
+                    Toast.makeText(getActivity(), "Visitor has not checked out", Toast.LENGTH_SHORT).show();
                 }
-                else {
+                else{
+                    String data = QRText;
+                    QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, 1000);
+                    Bitmap qrBits = qrgEncoder.getBitmap();
+                    qrImage.setImageBitmap(qrBits);
                     Toast.makeText(getActivity(), "Please share your QR Code to the visitor", Toast.LENGTH_SHORT).show();
                 }
             }

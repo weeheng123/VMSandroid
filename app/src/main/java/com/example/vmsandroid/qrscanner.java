@@ -111,11 +111,6 @@ public class qrscanner extends AppCompatActivity {
                         i.putExtra("toFrag", toFrag);
                         i.putExtra("qrdetails",qrdetails);
                         startActivity(i);
-
-
-                        FragmentManager manager = getSupportFragmentManager();
-                        FragmentTransaction transaction = manager.beginTransaction();
-                        transaction.replace(R.id.checkfragment_layout, fragobj).commit();
                     }
                 });
             }

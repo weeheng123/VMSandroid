@@ -45,7 +45,9 @@ import java.util.List;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,6 +70,7 @@ public class RegistrationFragment extends Fragment {
     private static final int IMAGE_PICK_GALLERY_CODE = 1000;
     private static final int IMAGE_PICK_CAMERA_CODE = 1001;
 
+    private int cont = 0;
     int index = 0;
     int indexofList = 0;
     int positionofIC = 0;
@@ -100,9 +103,17 @@ public class RegistrationFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_registration, container, false);
 
+        HttpLoggingInterceptor loggingInterceptor =  new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
 
         retrofitInterface = retrofit.create(RetrofitInterface.class);
@@ -127,14 +138,9 @@ public class RegistrationFragment extends Fragment {
                     Toast.makeText(getActivity(), "Image needs to be uploaded", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    String data = QRText;
-                    QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, 1000);
-                    Bitmap qrBits = qrgEncoder.getBitmap();
-                    qrImage.setImageBitmap(qrBits);
-
                     createQRentry();
+                    }
                 }
-            }
         });
 
         Button button = (Button) v.findViewById(R.id.uploadIc);
@@ -390,10 +396,14 @@ public class RegistrationFragment extends Fragment {
         call.enqueue(new Callback<qrentry>() {
             @Override
             public void onResponse(Call<qrentry> call, Response<qrentry> response) {
-                    if(!response.isSuccessful()){
-                        Toast.makeText(getActivity(), "Unsuccesful Creation", Toast.LENGTH_SHORT).show();
+                    if(response.code() == 400){
+                        Toast.makeText(getActivity(), "Visitor has not checked out", Toast.LENGTH_SHORT).show();
                     }
-                    else {
+                    else{
+                        String data = QRText;
+                        QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, 1000);
+                        Bitmap qrBits = qrgEncoder.getBitmap();
+                        qrImage.setImageBitmap(qrBits);
                         Toast.makeText(getActivity(), "Please share your QR Code to the visitor", Toast.LENGTH_SHORT).show();
                     }
             }
