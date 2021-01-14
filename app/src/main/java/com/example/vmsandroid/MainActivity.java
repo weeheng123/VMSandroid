@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
 
-
 //                                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
 //                                builder1.setTitle(loginresult.getRole());
 //                                builder1.setMessage(loginresult.getUsername());

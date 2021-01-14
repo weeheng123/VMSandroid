@@ -22,8 +22,11 @@ public interface RetrofitInterface {
     @POST("/app/qr")
     Call<qrentry> qrdetailEntry(@Body HashMap<String, String> detailstore);
 
-    @POST("/app/qr")
-    Call<ResponseBody> qrcodeEntry(@Body HashMap<String, ImageView> qrstore);
+//    @POST("/app/qr")
+//    Call<ResponseBody> qrcodeEntry(@Body HashMap<String, ImageView> qrstore);
+
+    @POST("/app/qrstatus")
+    Call<qrList> qrStatus(@Body HashMap<String, String> qrstatusstore);
 
     @POST("/app/qr")
     Call<qrentry> qrEntry(@Body qrentry qr);
