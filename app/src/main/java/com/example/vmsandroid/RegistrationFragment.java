@@ -331,7 +331,6 @@ public class RegistrationFragment extends Fragment {
             for (FirebaseVisionText.TextBlock block: result.getTextBlocks()){
                 String results = block.getText();
                 sb3.append(results);
-                sb3.append("\n \n");
                 for (FirebaseVisionText.Line line : block.getLines()){
                     String lineText = line.getText();
                     for (FirebaseVisionText.Element element : line.getElements()) {
@@ -354,17 +353,14 @@ public class RegistrationFragment extends Fragment {
             if (indexofList ==positionofIC + 1){
                 String details = block2.getText();
                 icDetails.append(details);
-                icDetails.append("\n \n");
             }
             if (indexofList ==positionofIC + 2){
                 String details = block2.getText();
                 nameDetails.append(details);
-                nameDetails.append("\n \n");
             }
             if (indexofList ==positionofIC + 3){
                 String details = block2.getText();
                 addressDetails.append(details);
-                addressDetails.append("\n \n");
             }
 
         }

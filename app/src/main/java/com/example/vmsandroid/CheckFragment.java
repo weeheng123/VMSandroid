@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -37,7 +38,6 @@ public class CheckFragment extends Fragment {
         qrIC = v.findViewById(R.id.qrvisitorIC);
         qrName = v.findViewById(R.id.qrvisitorName);
         qrAddress = v.findViewById(R.id.qrvisitorAddress);
-
 
         // Get data from activity
         Bundle QRdata = getArguments();
@@ -92,4 +92,22 @@ public class CheckFragment extends Fragment {
         return result && result1;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case CAMERA_REQUEST_CODE:
+                if (grantResults.length > 0) {
+                    boolean cameraAccepted = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageAccepted = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted && writeStorageAccepted) {
+                        startActivity(new Intent(getActivity(),qrscanner.class));
+                    } else {
+                        Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
+    }
 }

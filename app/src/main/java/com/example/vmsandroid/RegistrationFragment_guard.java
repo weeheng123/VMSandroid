@@ -367,17 +367,14 @@ public class RegistrationFragment_guard extends Fragment {
             if (indexofList ==positionofIC + 1){
                 String details = block2.getText();
                 icDetails.append(details);
-                icDetails.append("\n \n");
             }
             if (indexofList ==positionofIC + 2){
                 String details = block2.getText();
                 nameDetails.append(details);
-                nameDetails.append("\n \n");
             }
             if (indexofList ==positionofIC + 3){
                 String details = block2.getText();
                 addressDetails.append(details);
-                addressDetails.append("\n \n");
             }
 
         }
