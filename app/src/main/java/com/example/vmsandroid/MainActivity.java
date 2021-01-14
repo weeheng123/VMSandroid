@@ -2,6 +2,7 @@ package com.example.vmsandroid;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -87,12 +88,30 @@ public class MainActivity extends AppCompatActivity {
                                 if ((response.body().getUser().get(0).getRole()).contains("Guard"))
                                 {
                                     builder.setOnDismissListener(DialogInterface::dismiss);
-                                    startActivity(new Intent(getApplicationContext(),MainMenu_guard.class));
+                                    SharedPreferences  pref= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    editor.putString("Pusername", response.body().getUser().get(0).getUsername());
+                                    editor.putString("Punit", response.body().getUser().get(0).getUnit());
+                                    editor.putString("Pic", response.body().getUser().get(0).getIc());
+                                    editor.apply();
+                                    Intent i = new Intent(MainActivity.this, MainMenu_guard.class);
+                                    String toFrag = "Home";
+                                    i.putExtra("toFrag", toFrag);
+                                    startActivity(i);
                                 }
                                 else
                                 {
                                     builder.setOnDismissListener(DialogInterface::dismiss);
-                                    startActivity(new Intent(getApplicationContext(),MainMenu.class));
+                                    SharedPreferences  pref= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    editor.putString("Pusername", response.body().getUser().get(0).getUsername());
+                                    editor.putString("Punit", response.body().getUser().get(0).getUnit());
+                                    editor.putString("Pic", response.body().getUser().get(0).getIc());
+                                    editor.apply();
+                                    Intent i = new Intent(MainActivity.this, MainMenu.class);
+                                    String toFrag = "Home";
+                                    i.putExtra("toFrag", toFrag);
+                                    startActivity(i);
                                 }
 
 

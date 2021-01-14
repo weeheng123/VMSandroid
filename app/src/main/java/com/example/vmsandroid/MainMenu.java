@@ -21,7 +21,27 @@ public class MainMenu extends AppCompatActivity {
         bottomNavigationView=findViewById(R.id.BottomNav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
-//        getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
+        String intentFragment;
+        if (savedInstanceState == null){
+            Bundle extras = getIntent().getExtras();
+            if (extras == null){
+                intentFragment = "Home";
+            }
+            else
+            {
+                intentFragment = extras.getString("toFrag");
+            }
+        }
+        else
+        {
+            intentFragment = (String) savedInstanceState.getSerializable(("toFrag"));
+        }
+
+        switch (intentFragment){
+            case "Home":
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+                break;
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod=new

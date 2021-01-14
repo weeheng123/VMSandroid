@@ -41,7 +41,7 @@ public class MainMenu_guard extends AppCompatActivity {
 
         switch (intentFragment){
             case "Home":
-                getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                 break;
             case "CheckFragment":
                 bottomNavigationView.setSelectedItemId(R.id.registration);
