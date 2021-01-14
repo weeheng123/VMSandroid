@@ -9,6 +9,7 @@ public class qrentry {
     private String name ;
     private String ic ;
     private String address ;
+    private String unit;
     private ImageView qrimage;
 
     public qrentry(String oriname, String oriic, String oriaddress, String name, String ic, String address) {
@@ -18,5 +19,6 @@ public class qrentry {
         this.name = name;
         this.ic = ic;
         this.address = address;
+        this.unit = unit;
     }
 }
