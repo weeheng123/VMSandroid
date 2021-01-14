@@ -1,6 +1,8 @@
 package com.example.vmsandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -104,9 +106,12 @@ public class qrscanner extends AppCompatActivity {
 
                         Bundle bundle = new Bundle();
                         bundle.putStringArray("QRdetails", qrdetails);
+                        Intent i = new Intent(qrscanner.this, MainMenu_guard.class);
+                        String toFrag = "CheckFragment";
+                        i.putExtra("toFrag", toFrag);
+                        i.putExtra("qrdetails",qrdetails);
+                        startActivity(i);
 
-                        CheckFragment fragobj = new CheckFragment();
-                        fragobj.setArguments(bundle);
 
                         FragmentManager manager = getSupportFragmentManager();
                         FragmentTransaction transaction = manager.beginTransaction();
@@ -115,12 +120,16 @@ public class qrscanner extends AppCompatActivity {
                 });
             }
         });
+
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         codeScanner.startPreview();
+
     }
 }
 
