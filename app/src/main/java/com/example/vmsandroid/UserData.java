@@ -11,6 +11,12 @@ public class UserData {
     @SerializedName("username")
     @Expose
     private String username;
+    @SerializedName("unit")
+    @Expose
+    private String unit;
+    @SerializedName("ic")
+    @Expose
+    private String ic;
 
     public String getRole() {
         return role;
@@ -26,6 +32,22 @@ public class UserData {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String username) {
+        this.unit = username;
+    }
+
+    public String getIc() {
+        return ic;
+    }
+
+    public void setIc(String username) {
+        this.ic = username;
     }
 
 }

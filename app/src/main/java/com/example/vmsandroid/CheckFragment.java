@@ -59,8 +59,7 @@ public class CheckFragment extends Fragment {
         registeruser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container, new RegistrationFragment_guard());
                 fragmentTransaction.commit();
             }

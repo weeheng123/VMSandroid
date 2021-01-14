@@ -82,8 +82,7 @@ public class qrscanner extends AppCompatActivity {
                         qrdetails[1] = qrname;
                         qrdetails[2] = qraddress;
 
-                        Bundle bundle = new Bundle();
-                        bundle.putStringArray("QRdetails", qrdetails);
+
                         Intent i = new Intent(qrscanner.this, MainMenu_guard.class);
                         String toFrag = "CheckFragment";
                         i.putExtra("toFrag", toFrag);
@@ -100,10 +99,12 @@ public class qrscanner extends AppCompatActivity {
                             public void onResponse(Call<qrList> call, Response<qrList> response) {
                                 for(int j = 0; j<response.body().getQrstatus().size(); j++) {
                                     boolean isCheckedIn = false;
+
                                     int id = 0;
                                     if ((response.body().getQrstatus().get(j).getCheckin()) == null) {
                                         isCheckedIn = false;
                                         id = Integer.parseInt(response.body().getQrstatus().get(j).getId());
+
                                     } else {
                                         isCheckedIn = true;
                                     }
@@ -111,6 +112,7 @@ public class qrscanner extends AppCompatActivity {
                                     i.putExtra("id", id);
                                 }
                             }
+
 
                             @Override
                             public void onFailure(Call<qrList> call, Throwable t) {
