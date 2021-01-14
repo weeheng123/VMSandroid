@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class qrscanner extends AppCompatActivity {
     CodeScanner codeScanner;
     CodeScannerView scanView;
     TextView resultData, ictextview, nametextview, addresstextview;
+
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
@@ -80,6 +82,13 @@ public class qrscanner extends AppCompatActivity {
                         qrdetails[1] = qrname;
                         qrdetails[2] = qraddress;
 
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArray("QRdetails", qrdetails);
+                        Intent i = new Intent(qrscanner.this, MainMenu_guard.class);
+                        String toFrag = "CheckFragment";
+                        i.putExtra("toFrag", toFrag);
+                        i.putExtra("qrdetails",qrdetails);
+
                         //starting of POST request to get check in
                         HashMap<String, String> qrstatusstore = new HashMap<>();
                         qrstatusstore.put("ic", qric);
@@ -89,27 +98,26 @@ public class qrscanner extends AppCompatActivity {
                         call.enqueue(new Callback<qrList>() {
                             @Override
                             public void onResponse(Call<qrList> call, Response<qrList> response) {
-                                if ((response.body().getQrstatus().get(0).getCheckin()).contains("null")){
+                                for(int j = 0; j<response.body().getQrstatus().size(); j++) {
                                     boolean isCheckedIn = false;
-                                }
-                                else{
-                                    boolean isCheckedIn = true;
+                                    int id = 0;
+                                    if ((response.body().getQrstatus().get(j).getCheckin()) == null) {
+                                        isCheckedIn = false;
+                                        id = Integer.parseInt(response.body().getQrstatus().get(j).getId());
+                                    } else {
+                                        isCheckedIn = true;
+                                    }
+                                    i.putExtra("isCheckedIn", isCheckedIn);
+                                    i.putExtra("id", id);
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<qrList> call, Throwable t) {
-
+                                Toast.makeText(qrscanner.this, "error" + t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                         //ending of Post request
-
-                        Bundle bundle = new Bundle();
-                        bundle.putStringArray("QRdetails", qrdetails);
-                        Intent i = new Intent(qrscanner.this, MainMenu_guard.class);
-                        String toFrag = "CheckFragment";
-                        i.putExtra("toFrag", toFrag);
-                        i.putExtra("qrdetails",qrdetails);
                         startActivity(i);
                     }
                 });

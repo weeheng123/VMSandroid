@@ -26,6 +26,7 @@ public class CheckFragment extends Fragment {
 
     TextView qrIC,qrName,qrAddress;
     String[] qrdata;
+    boolean isCheckedIn;
 
     String cameraPermission[];
 
@@ -42,8 +43,8 @@ public class CheckFragment extends Fragment {
         // Get data from activity
         Bundle QRdata = getArguments();
         if (QRdata != null){
-            qrdata = QRdata.getStringArray("QRDetails");
-
+            qrdata = QRdata.getStringArray("qrdetails");
+            isCheckedIn = QRdata.getBoolean("isCheckedIn");
         }
 
         if (qrdata != null){
@@ -51,6 +52,7 @@ public class CheckFragment extends Fragment {
             qrName.setText(qrdata[1]);
             qrAddress.setText(qrdata[2]);
         }
+
 
 
         Button registeruser = (Button) v.findViewById(R.id.registeruser);

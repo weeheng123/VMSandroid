@@ -46,13 +46,9 @@ public class MainMenu_guard extends AppCompatActivity {
             case "CheckFragment":
                 bottomNavigationView.setSelectedItemId(R.id.registration);
                 Bundle userBundle = getIntent().getExtras();
-                String[] userData = userBundle.getStringArray("qrdetails");
-                Bundle fragUserData = new Bundle();
-                fragUserData.putStringArray("QRDetails", userData);
                 Fragment CheckFragment = new CheckFragment();
-                CheckFragment.setArguments(fragUserData);
+                CheckFragment.setArguments(userBundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.container,CheckFragment).commit();
-
                 break;
         }
 
