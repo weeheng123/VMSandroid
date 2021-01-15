@@ -22,6 +22,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
+import java.util.HashMap;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class CheckFragment extends Fragment {
 
     private static final int CAMERA_REQUEST_CODE = 200;
@@ -33,11 +44,31 @@ public class CheckFragment extends Fragment {
 
     String cameraPermission[];
 
+    private Retrofit retrofit;
+    private RetrofitInterface retrofitInterface;
+    private String BASE_URL = "https://aqueous-hollows-89178.herokuapp.com/";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_check, container, false);
+
+
+        HttpLoggingInterceptor loggingInterceptor =  new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
 
         qrIC = v.findViewById(R.id.qrvisitorIC);
         qrName = v.findViewById(R.id.qrvisitorName);
@@ -74,7 +105,36 @@ public class CheckFragment extends Fragment {
         checkin_out.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
+                HashMap<String, String> qrcheckin_out = new HashMap<>();
 
+                if(isCheckedIn == false){
+                    qrcheckin_out.put("id", Integer.toString(id));
+                    qrcheckin_out.put("checkin", currentDateTimeString);
+                }
+                else{
+                    qrcheckin_out.put("id", Integer.toString(id));
+                    qrcheckin_out.put("checkout", currentDateTimeString);
+                }
+
+                Call<qrList> call = retrofitInterface.qrCheckin_Out(qrcheckin_out);
+                call.enqueue(new Callback<qrList>() {
+                    @Override
+                    public void onResponse(Call<qrList> call, Response<qrList> response) {
+                        if(response.code() == 400){
+                            Toast.makeText(getActivity(), "QRCode already been used", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(getActivity(), "Succesfully " + checkin_out.getText(), Toast.LENGTH_SHORT).show();
+                            checkin_out.setText("Scan QR Again");
+                        }
+
+                    }
+                    @Override
+                    public void onFailure(Call<qrList> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Error " + checkin_out.getText(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

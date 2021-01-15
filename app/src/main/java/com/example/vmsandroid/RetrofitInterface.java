@@ -33,4 +33,7 @@ public interface RetrofitInterface {
 
     @GET("/app/announcement")
     Call<announcementList> getAnn();
+
+    @PUT("/app/checkin_out")
+    Call<qrList> qrCheckin_Out(@Body HashMap<String, String> qrcheckin_out);
 }
