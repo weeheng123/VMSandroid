@@ -84,47 +84,33 @@ public class MainActivity extends AppCompatActivity {
                 call.enqueue(new Callback<UserList>() {
                     @Override
                     public void onResponse(Call<UserList> call, Response<UserList> response) {
-                            if (response.code() == 200){
-                                if ((response.body().getUser().get(0).getRole()).contains("Guard"))
-                                {
-                                    builder.setOnDismissListener(DialogInterface::dismiss);
-                                    SharedPreferences  pref= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = pref.edit();
-                                    editor.putString("Pusername", response.body().getUser().get(0).getUsername());
-                                    editor.putString("Punit", response.body().getUser().get(0).getUnit());
-                                    editor.putString("Pic", response.body().getUser().get(0).getIc());
-                                    editor.apply();
-                                    Intent i = new Intent(MainActivity.this, MainMenu_guard.class);
-                                    String toFrag = "Home";
-                                    i.putExtra("toFrag", toFrag);
-                                    startActivity(i);
-                                }
-                                else
-                                {
-                                    builder.setOnDismissListener(DialogInterface::dismiss);
-                                    SharedPreferences  pref= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = pref.edit();
-                                    editor.putString("Pusername", response.body().getUser().get(0).getUsername());
-                                    editor.putString("Punit", response.body().getUser().get(0).getUnit());
-                                    editor.putString("Pic", response.body().getUser().get(0).getIc());
-                                    editor.apply();
-                                    Intent i = new Intent(MainActivity.this, MainMenu.class);
-                                    String toFrag = "Home";
-                                    i.putExtra("toFrag", toFrag);
-                                    startActivity(i);
-                                }
+                        if (response.code() == 200){
+                            builder.setOnDismissListener(DialogInterface::dismiss);
+                            SharedPreferences  pref= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString("Pusername", response.body().getUser().get(0).getUsername());
+                            editor.putString("Punit", response.body().getUser().get(0).getUnit());
+                            editor.putString("Pic", response.body().getUser().get(0).getIc());
+                            editor.apply();
+                            Intent i = new Intent(MainActivity.this, MainMenu_guard.class);
+                            String toFrag = "Home";
+                            i.putExtra("toFrag", toFrag);
 
-
-//                                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-//                                builder1.setTitle(loginresult.getRole());
-//                                builder1.setMessage(loginresult.getUsername());
-//                                builder1.show();
-
-//                                Toast.makeText(MainActivity.this, "role:"+ response.body().getUser().get(0).getRole(), Toast.LENGTH_SHORT).show();
+                            if ((response.body().getUser().get(0).getRole()).contains("Guard"))
+                            {
+                                i = new Intent(MainActivity.this, MainMenu_guard.class);
+                                startActivity(i);
                             }
-                            if (response.code() ==404){
-                                Toast.makeText(MainActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                            else
+                            {
+                                i = new Intent(MainActivity.this, MainMenu.class);
+                                startActivity(i);
                             }
+
+                        }
+                        if (response.code() ==404){
+                            Toast.makeText(MainActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                        }
                  }
 
                     @Override

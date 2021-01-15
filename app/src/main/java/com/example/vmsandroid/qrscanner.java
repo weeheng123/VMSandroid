@@ -113,10 +113,10 @@ public class qrscanner extends AppCompatActivity {
 
                                     } else {
                                         isCheckedIn = true;
+                                        id = Integer.parseInt(response.body().getQrstatus().get(j).getId());
                                     }
                                     editor.putBoolean("isCheckedIn", isCheckedIn);
                                     editor.putInt("id", id);
-
 
                                 }
                                 editor.apply();
