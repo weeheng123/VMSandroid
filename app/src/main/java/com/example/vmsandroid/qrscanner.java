@@ -1,6 +1,7 @@
 package com.example.vmsandroid;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.widget.TextView;
@@ -88,6 +89,11 @@ public class qrscanner extends AppCompatActivity {
                         i.putExtra("toFrag", toFrag);
                         i.putExtra("qrdetails",qrdetails);
 
+
+                        SharedPreferences pref= getApplicationContext().getSharedPreferences("CheckPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putBoolean("isCheckedIn", false);
+                        editor.apply();
                         //starting of POST request to get check in
                         HashMap<String, String> qrstatusstore = new HashMap<>();
                         qrstatusstore.put("ic", qric);
@@ -108,9 +114,13 @@ public class qrscanner extends AppCompatActivity {
                                     } else {
                                         isCheckedIn = true;
                                     }
-                                    i.putExtra("isCheckedIn", isCheckedIn);
-                                    i.putExtra("id", id);
+                                    editor.putBoolean("isCheckedIn", isCheckedIn);
+                                    editor.putInt("id", id);
+
+
                                 }
+                                editor.apply();
+                                startActivity(i);
                             }
 
 
@@ -120,7 +130,6 @@ public class qrscanner extends AppCompatActivity {
                             }
                         });
                         //ending of Post request
-                        startActivity(i);
                     }
                 });
             }
