@@ -2,7 +2,9 @@ package com.example.vmsandroid;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -26,7 +28,8 @@ public class CheckFragment extends Fragment {
 
     TextView qrIC,qrName,qrAddress;
     String[] qrdata;
-    boolean isCheckedIn;
+    boolean isCheckedIn= false;
+    int id;
 
     String cameraPermission[];
 
@@ -39,19 +42,41 @@ public class CheckFragment extends Fragment {
         qrIC = v.findViewById(R.id.qrvisitorIC);
         qrName = v.findViewById(R.id.qrvisitorName);
         qrAddress = v.findViewById(R.id.qrvisitorAddress);
+        SharedPreferences pref = getActivity().getSharedPreferences("CheckPref", Context.MODE_PRIVATE);
 
+
+        String Punit = pref.getString("Punit", null);
         // Get data from activity
         Bundle QRdata = getArguments();
         if (QRdata != null){
             qrdata = QRdata.getStringArray("qrdetails");
-            isCheckedIn = QRdata.getBoolean("isCheckedIn");
+            isCheckedIn = pref.getBoolean("isCheckedIn", false);
+            id = pref.getInt("id", 0);
+
         }
+
 
         if (qrdata != null){
             qrIC.setText(qrdata[0]);
             qrName.setText(qrdata[1]);
             qrAddress.setText(qrdata[2]);
         }
+
+
+
+        Button checkin_out = (Button) v.findViewById(R.id.checkin);
+        if(isCheckedIn == false){
+            checkin_out.setText("Check In");
+        }
+        else{
+            checkin_out.setText("Check Out");
+        }
+        checkin_out.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
 
