@@ -74,7 +74,7 @@
                             android:textSize="20dp" />
                         <!-- The image taken will be displayed here -->
                         <EditText
-                            android:id="@+id/visitorName"
+                            android:id="@+id/reportTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxHeight="250dp"
@@ -85,17 +85,36 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="10dp"
-                            android:text=" Address:"
+                            android:text="Name:"
                             android:textColor="@color/black"
                             android:textSize="20dp" />
                         <!-- The image taken will be displayed here -->
-                        <EditText
-                            android:id="@+id/visitorIC"
+                        <TextView
+                            android:id="@+id/tenantName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxHeight="250dp"
                             android:backgroundTint="#D3D3D3"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="20dp"
+                            android:paddingLeft="3dp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text="Address:"
+                            android:textColor="@color/black"
+                            android:textSize="20dp" />
+                        <!-- The image taken will be displayed here -->
+                        <TextView
+                            android:id="@+id/tenantUnit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxHeight="250dp"
+                            android:backgroundTint="#D3D3D3"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"
+                            android:paddingLeft="3dp"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -106,7 +125,7 @@
                             android:textSize="20dp" />
                         <!-- The image taken will be displayed here -->
                         <EditText
-                            android:id="@+id/visitorAddress"
+                            android:id="@+id/incidentRemarks"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxHeight="250dp"
@@ -114,7 +133,7 @@
                             android:textColor="@color/black" />
 
                         <Button
-                            android:id="@+id/uploadIc"
+                            android:id="@+id/submitIncident"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

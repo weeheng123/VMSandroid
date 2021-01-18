@@ -36,22 +36,12 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/logout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:text="Edit Profile"
-        android:textColor="@color/black" />
-
-    <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="50dp"
         android:backgroundTint="@color/black"
         android:text="Logout"
         android:textColor="@color/white" />
