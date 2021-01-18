@@ -3,10 +3,14 @@ package com.example.vmsandroid;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +18,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class Incident_GuardFragment extends Fragment {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,6 +60,27 @@ public class Incident_GuardFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
+
+            ArrayList<IterateIncident> IncidentList = new ArrayList<>();
+            for (int i = 0; i < response.body().getIncident().size(); i++){
+                IncidentList.add(new IterateAnnouncement(response.body().getIncident().get(i).getName(),
+                        response.body().getIncident().get(i).getUnit(),
+                        response.body().getIncident().get(i).getTitle(),
+                        response.body().getIncident().get(i).getCreatedAt(),
+                        response.body().getIncident().get(i).getRemarks(),
+                        response.body().getIncident().get(i).getImage()
+                        ));
+            }
+
+            mRecyclerView = getActivity().findViewById(R.id.RecyclerView1);
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(getActivity());
+            mAdapter = new IncidentAdapter(IncidentList);
+
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setAdapter(mAdapter);
+
         }
     }
 
