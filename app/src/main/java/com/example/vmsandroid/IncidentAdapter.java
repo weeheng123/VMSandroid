@@ -3,10 +3,12 @@ package com.example.vmsandroid;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -20,7 +22,8 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.Incide
         public TextView mTitle;
         public TextView mDate;
         public TextView mRemarks;
-        public ImageView mIncidentImage;
+        public TextView mStatus;
+        public Button mIncidentID;
 
 
 
@@ -31,7 +34,8 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.Incide
             mTitle = itemView.findViewById(R.id.IncidentTitle);
             mDate = itemView.findViewById(R.id.IncidentDate);
             mRemarks = itemView.findViewById(R.id.IncidentRemarks);
-            mIncidentImage = itemView.findViewById(R.id.IncidentImage);
+            mStatus = itemView.findViewById(R.id.IncidentStatus);
+            mIncidentID = itemView.findViewById(R.id.ResolveIncident);
 
         }
     }
@@ -58,8 +62,8 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.Incide
         holder.mTitle.setText(currentItem.getIncidentTitle());
         holder.mDate.setText(currentItem.getIncidentDate());
         holder.mRemarks.setText(currentItem.getIncidentRemarks());
-        holder.mIncidentImage.setImageResource(currentItem.getIncidentImage());
-
+        holder.mStatus.setText(currentItem.getStatus());
+        holder.mIncidentID.setId(currentItem.getID());
     }
 
     @Override

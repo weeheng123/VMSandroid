@@ -165,7 +165,7 @@ public class IncidentFragment extends Fragment {
                 incident_details.put("title", incidentTitle.getText().toString());
                 incident_details.put("description", incidentDesc.getText().toString());
                 incident_details.put("name", name.getText().toString());
-                incident_details.put("address", address.getText().toString());
+                incident_details.put("unit", address.getText().toString());
 
                 Call call = retrofitInterface.incidentUpload(incident_details);
                 call.enqueue(new Callback() {

@@ -90,17 +90,18 @@ public class Incident_GuardFragment extends Fragment {
         call.enqueue(new Callback<IncidentList>() {
             @Override
             public void onResponse(Call<IncidentList> call, Response<IncidentList> response) {
-
             ArrayList<IterateIncident> IncidentList = new ArrayList<>();
             for (int i = 0; i < response.body().getIncident().size(); i++){
-                IncidentList.add(new IterateAnnouncement(
+                IncidentList.add(new IterateIncident(
                         response.body().getIncident().get(i).getName(),
                         response.body().getIncident().get(i).getUnit(),
                         response.body().getIncident().get(i).getTitle(),
                         response.body().getIncident().get(i).getCreatedAt(),
                         response.body().getIncident().get(i).getDescription(),
-                ));
+                        response.body().getIncident().get(i).getStatus(),
+                        response.body().getIncident().get(i).getId()));
             }
+
 
             mRecyclerView = getActivity().findViewById(R.id.RecyclerView1);
             mRecyclerView.setHasFixedSize(true);

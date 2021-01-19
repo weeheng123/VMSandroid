@@ -1,20 +1,24 @@
 package com.example.vmsandroid;
 
+import com.google.gson.internal.$Gson$Preconditions;
+
 public class IterateIncident {
     private String mName;
     private String mUnit;
     private String mIncidentTitle;
     private String mIncidentDate;
     private String mIncidentRemarks;
-    private int mIncidentImage;
+    private String mStatus;
+    private int mId;
 
-    public IterateIncident (String Name, String Unit, String IncidentTitle, String IncidentDate, String IncidentRemarks, int IncidentImage) {
+    public IterateIncident (String Name, String Unit, String IncidentTitle, String IncidentDate, String IncidentRemarks, String Status, int Id) {
         mName = Name;
         mUnit = Unit;
         mIncidentTitle = IncidentTitle;
         mIncidentDate = IncidentDate;
         mIncidentRemarks = IncidentRemarks;
-        mIncidentImage = IncidentImage;
+        mStatus = Status;
+        mId = Id;
     }
 
     public String getName(){
@@ -37,8 +41,9 @@ public class IterateIncident {
         return mIncidentRemarks;
     }
 
-    public int getIncidentImage(){
-        return mIncidentImage;
-    }
+    public String getStatus() { return mStatus; }
+
+    public int getID() {return mId; }
+
 
 }
