@@ -84,6 +84,7 @@ public class RegistrationFragment extends Fragment {
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
     private String BASE_URL = "https://aqueous-hollows-89178.herokuapp.com/";
+
     private String QRText = "";
     private String oriname = "";
     private String oriic = "";
