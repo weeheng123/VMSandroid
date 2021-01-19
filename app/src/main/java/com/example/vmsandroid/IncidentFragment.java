@@ -45,6 +45,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -159,16 +160,14 @@ public class IncidentFragment extends Fragment {
                 uploadIncident(image_uri);
             }
             private void uploadIncident(Uri fileURI){
-                File file = new File(String.valueOf(fileURI));
+                HashMap<String, String> incident_details = new HashMap<>();
 
-                RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-                RequestBody titlePart = RequestBody.create(MultipartBody.FORM, incidentTitle.getText().toString());
-                RequestBody descPart = RequestBody.create(MultipartBody.FORM, incidentDesc.getText().toString());
-                RequestBody namePart = RequestBody.create(MultipartBody.FORM, name.getText().toString());
-                RequestBody addressPart = RequestBody.create(MultipartBody.FORM, address.getText().toString());
-                MultipartBody.Part picturePart = MultipartBody.Part.createFormData("picture", file.getName(), requestBody);
+                incident_details.put("title", incidentTitle.getText().toString());
+                incident_details.put("description", incidentDesc.getText().toString());
+                incident_details.put("name", name.getText().toString());
+                incident_details.put("address", address.getText().toString());
 
-                Call call = retrofitInterface.uploadIncident(titlePart, descPart, namePart, addressPart,picturePart);
+                Call call = retrofitInterface.incidentUpload(incident_details);
                 call.enqueue(new Callback() {
                     @Override
                     public void onResponse(Call call, Response response) {

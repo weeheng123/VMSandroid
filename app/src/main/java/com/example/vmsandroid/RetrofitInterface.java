@@ -41,13 +41,9 @@ public interface RetrofitInterface {
     @PUT("/app/checkin_out")
     Call<qrList> qrCheckin_Out(@Body HashMap<String, String> qrcheckin_out);
 
-    @Multipart
     @POST("/app/incident")
-    Call <ResponseBody> uploadIncident(
-            @Part("title") RequestBody title,
-            @Part("description") RequestBody description,
-            @Part("unit") RequestBody unit,
-            @Part("name") RequestBody name,
-            @Part MultipartBody.Part picture
-    );
+    Call<IncidentList> incidentUpload(@Body HashMap<String, String> incident_details);
+
+    @GET("/app/incident/reported")
+    Call<IncidentList> getInc();
 }
