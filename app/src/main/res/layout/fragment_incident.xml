@@ -32,7 +32,7 @@
                     app:cardElevation="8dp">
 
                     <ImageView
-                        android:id="@+id/scanqr"
+                        android:id="@+id/uploadpicture"
                         android:layout_width="155dp"
                         android:layout_height="155dp"
                         android:layout_alignParentTop="true"
@@ -74,7 +74,7 @@
                             android:textSize="20dp" />
                         <!-- The image taken will be displayed here -->
                         <EditText
-                            android:id="@+id/reportTitle"
+                            android:id="@+id/incidentTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxHeight="250dp"
@@ -125,7 +125,7 @@
                             android:textSize="20dp" />
                         <!-- The image taken will be displayed here -->
                         <EditText
-                            android:id="@+id/incidentRemarks"
+                            android:id="@+id/incidentDesc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxHeight="250dp"
@@ -133,7 +133,7 @@
                             android:textColor="@color/black" />
 
                         <Button
-                            android:id="@+id/submitIncident"
+                            android:id="@+id/incidentSubmit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
