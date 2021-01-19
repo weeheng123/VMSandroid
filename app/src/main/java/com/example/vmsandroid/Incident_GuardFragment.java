@@ -12,6 +12,14 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Incident_GuardFragment#newInstance} factory method to
@@ -22,6 +30,11 @@ public class Incident_GuardFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private Retrofit retrofit;
+    private RetrofitInterface retrofitInterface;
+    private String BASE_URL = "https://aqueous-hollows-89178.herokuapp.com/";
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,20 +70,36 @@ public class Incident_GuardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
 
+        HttpLoggingInterceptor loggingInterceptor =  new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+
+        Call<IncidentList> call = retrofitInterface.getInc();
+        call.enqueue(new Callback<IncidentList>() {
+            @Override
+            public void onResponse(Call<IncidentList> call, Response<IncidentList> response) {
 
             ArrayList<IterateIncident> IncidentList = new ArrayList<>();
             for (int i = 0; i < response.body().getIncident().size(); i++){
-                IncidentList.add(new IterateAnnouncement(response.body().getIncident().get(i).getName(),
+                IncidentList.add(new IterateAnnouncement(
+                        response.body().getIncident().get(i).getName(),
                         response.body().getIncident().get(i).getUnit(),
                         response.body().getIncident().get(i).getTitle(),
                         response.body().getIncident().get(i).getCreatedAt(),
-                        response.body().getIncident().get(i).getRemarks(),
-                        response.body().getIncident().get(i).getImage()
-                        ));
+                        response.body().getIncident().get(i).getDescription(),
+                ));
             }
 
             mRecyclerView = getActivity().findViewById(R.id.RecyclerView1);
@@ -81,6 +110,16 @@ public class Incident_GuardFragment extends Fragment {
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(mAdapter);
 
+            }
+
+            @Override
+            public void onFailure(Call<IncidentList> call, Throwable t) {
+
+            }
+        });
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
