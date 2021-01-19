@@ -25,7 +25,7 @@ public class IncidentData {
     private String name;
     @SerializedName("unit")
     @Expose
-    private Object unit;
+    private String unit;
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
@@ -81,11 +81,11 @@ public class IncidentData {
         this.name = name;
     }
 
-    public Object getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(Object unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
