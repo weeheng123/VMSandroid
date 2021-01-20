@@ -9,8 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -44,6 +48,9 @@ public class Incident_GuardFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Button mIncident;
+    private TextView mStatus;
 
     public Incident_GuardFragment() {
         // Required empty public constructor
@@ -86,6 +93,7 @@ public class Incident_GuardFragment extends Fragment {
 
         retrofitInterface = retrofit.create(RetrofitInterface.class);
 
+
         Call<IncidentList> call = retrofitInterface.getInc();
         call.enqueue(new Callback<IncidentList>() {
             @Override
@@ -115,7 +123,7 @@ public class Incident_GuardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<IncidentList> call, Throwable t) {
-
+                Toast.makeText(getActivity(), "error" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         if (getArguments() != null) {
