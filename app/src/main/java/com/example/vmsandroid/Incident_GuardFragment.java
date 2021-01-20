@@ -93,32 +93,6 @@ public class Incident_GuardFragment extends Fragment {
 
         retrofitInterface = retrofit.create(RetrofitInterface.class);
 
-        mIncident.findViewById(R.id.ResolveIncident);
-        mStatus.findViewById(R.id.IncidentStatus);
-
-        mIncident.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, String> incident_status = new HashMap<>();
-                incident_status.put("id", mIncident.getTag().toString());
-                incident_status.put("status", "Resolved");
-
-                Call<IncidentList> call = retrofitInterface.incident_update(incident_status);
-                call.enqueue(new Callback<IncidentList>() {
-                    @Override
-                    public void onResponse(Call<IncidentList> call, Response<IncidentList> response) {
-                        mIncident.setVisibility(View.INVISIBLE);
-                        mStatus.setText("Resolved");
-                    }
-
-                    @Override
-                    public void onFailure(Call<IncidentList> call, Throwable t) {
-                        Toast.makeText(getActivity(), "error" + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            }
-        });
 
         Call<IncidentList> call = retrofitInterface.getInc();
         call.enqueue(new Callback<IncidentList>() {
