@@ -63,7 +63,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.Incide
         holder.mDate.setText(currentItem.getIncidentDate());
         holder.mRemarks.setText(currentItem.getIncidentRemarks());
         holder.mStatus.setText(currentItem.getStatus());
-        holder.mIncidentID.setId(currentItem.getID());
+        holder.mIncidentID.setTag(currentItem.getID());
     }
 
     @Override

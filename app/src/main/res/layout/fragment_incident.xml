@@ -48,13 +48,15 @@
                 android:gravity="center">
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="368dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/camera_lay"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
                     android:padding="100dp"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="8dp">
@@ -147,8 +149,17 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-        </LinearLayout>
 
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RecyclerView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:scrollbars="vertical"/>
+
+            </LinearLayout>
 
 
     </ScrollView>
