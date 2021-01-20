@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.FileUtils;
 import android.provider.MediaStore;
@@ -45,6 +47,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import okhttp3.MediaType;
@@ -60,6 +63,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class IncidentFragment extends Fragment {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 400;
@@ -99,6 +106,9 @@ public class IncidentFragment extends Fragment {
 
         retrofitInterface = retrofit.create(RetrofitInterface.class);
 
+
+
+
         SharedPreferences pref = getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
 
         String Punit = pref.getString("Punit", null);
@@ -111,6 +121,40 @@ public class IncidentFragment extends Fragment {
         EditText incidentTitle = v.findViewById(R.id.incidentTitle);
         EditText incidentDesc = v.findViewById(R.id.incidentDesc);
         Button incidentSubmit = v.findViewById(R.id.incidentSubmit);
+
+        HashMap<String, String> tenant_incident = new HashMap<>();
+        tenant_incident.put("name", Pusername);
+
+
+        Call <IncidentList> call = retrofitInterface.getIncTenant(tenant_incident);
+        call.enqueue(new Callback<IncidentList>() {
+            @Override
+            public void onResponse(Call<IncidentList> call, Response<IncidentList> response) {
+                ArrayList<IterateIncidentUser> IncidentUserList = new ArrayList<>();
+
+                for (int i = 0; i < response.body().getIncident().size(); i++){
+                    IncidentUserList.add(new IterateIncidentUser(response.body().getIncident().get(i).getTitle(),
+                            response.body().getIncident().get(i).getCreatedAt(),
+                            response.body().getIncident().get(i).getDescription(),
+                            response.body().getIncident().get(i).getStatus()));
+                }
+
+                mRecyclerView = getActivity().findViewById(R.id.RecyclerView2);
+                mRecyclerView.setHasFixedSize(true);
+                mLayoutManager = new LinearLayoutManager(getActivity());
+                mAdapter = new IncidentUserAdapter(IncidentUserList);
+
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mRecyclerView.setAdapter(mAdapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<IncidentList> call, Throwable t) {
+
+            }
+        });
+
 
         uploadpic = (ImageView) v.findViewById(R.id.uploadpicture);
         uploadpic.setOnClickListener(new View.OnClickListener() {
