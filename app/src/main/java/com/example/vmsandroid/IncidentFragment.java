@@ -88,7 +88,7 @@ public class IncidentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        getActivity().setTitle("Incident Report");
         View v =  inflater.inflate(R.layout.fragment_incident, container, false);
 
         HttpLoggingInterceptor loggingInterceptor =  new HttpLoggingInterceptor();
@@ -141,6 +141,7 @@ public class IncidentFragment extends Fragment {
 
                 mRecyclerView = getActivity().findViewById(R.id.RecyclerView2);
                 mRecyclerView.setHasFixedSize(true);
+                mRecyclerView.setNestedScrollingEnabled(false);
                 mLayoutManager = new LinearLayoutManager(getActivity());
                 mAdapter = new IncidentUserAdapter(IncidentUserList);
 

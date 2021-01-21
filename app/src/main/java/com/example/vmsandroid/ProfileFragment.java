@@ -23,6 +23,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle("Profile");
         View v =  inflater.inflate(R.layout.fragment_profile, container, false);
 
         IC = v.findViewById(R.id.username);
@@ -45,6 +46,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),MainActivity.class));
+                getActivity().finish();
             }
         });
         return v;

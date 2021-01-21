@@ -1,5 +1,7 @@
 package com.example.vmsandroid;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.Incide
         public TextView mRemarks;
         public TextView mStatus;
         public Button mIncidentID;
+        public Button currentBtn;
 
 
         public IncidentViewHolder(@NonNull View itemView) {
@@ -72,19 +75,22 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.Incide
                 public void onClick(View v) {
                     HashMap<String, String> incident_status = new HashMap<>();
                     incident_status.put("id", mIncidentID.getTag().toString());
+                    currentBtn = itemView.findViewWithTag(mIncidentID.getTag());
+
                     incident_status.put("status", "Resolved");
 
                     Call<IncidentList> call = retrofitInterface.incident_update(incident_status);
                     call.enqueue(new Callback<IncidentList>() {
                         @Override
                         public void onResponse(Call<IncidentList> call, Response<IncidentList> response) {
-                            mIncidentID.setVisibility(View.INVISIBLE);
+                            currentBtn.setVisibility(View.INVISIBLE);
                             mStatus.setText("Resolved");
                         }
 
                         @Override
                         public void onFailure(Call<IncidentList> call, Throwable t) {
-//                            Toast.makeText(, "error" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(itemView.getContext(), "error" + t.getMessage(), Toast.LENGTH_SHORT).show();
+
                         }
                     });
 
@@ -100,6 +106,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.Incide
     @NonNull
     @Override
     public IncidentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.incident_iterate, parent, false);
         IncidentViewHolder ivh = new IncidentViewHolder(v);
 
@@ -118,6 +125,13 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.Incide
         holder.mRemarks.setText(currentItem.getIncidentRemarks());
         holder.mStatus.setText(currentItem.getStatus());
         holder.mIncidentID.setTag(currentItem.getID());
+        if (currentItem.getStatus().contains("Resolved")){
+            holder.mIncidentID.setVisibility(View.INVISIBLE);
+        }
+        else {
+            holder.mIncidentID.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
