@@ -50,4 +50,7 @@ public interface RetrofitInterface {
     @POST("/app/incident/get")
     Call<IncidentList> getIncTenant(@Body HashMap<String, String> tenant_incident);
 
+    @PUT("/app/incident/status")
+    Call<IncidentList> incident_update(@Body HashMap<String, String> incident_status);
+
 }
