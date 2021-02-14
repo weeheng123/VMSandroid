@@ -77,7 +77,7 @@ public class Incident_GuardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getActivity().setTitle("Incident Report");
         HttpLoggingInterceptor loggingInterceptor =  new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
